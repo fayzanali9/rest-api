@@ -10,7 +10,7 @@ const Model = require('../model/model');
 
 
 router.get('/', function(req,res){
-    res.sendFile(path.join(__dirname,'../frontend/main.html'));
+    res.sendFile(path.join(__dirname,'../../frontend/main.html'));
   });
 
 router.post('/add', async (req, res) => {
