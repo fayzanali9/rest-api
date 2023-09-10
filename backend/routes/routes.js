@@ -37,7 +37,8 @@ router.post('/add', async (req, res) => {
 router.get('/view/all', async (req, res) => {
     try{
         const data = await Model.find();
-        res.json(data)
+        res.render('data', { data });
+        // res.json(data)
     }
     catch(error){
         res.status(500).json({message: error.message})
