@@ -22,7 +22,8 @@ router.post('/add', async (req, res) => {
 
     try {
         const dataToSave = await data.save();
-        res.status(200).json(dataToSave)
+        // res.status(200).json(dataToSave)
+        res.status(200).render('dataToSave',{dataToSave});
     }
     catch (error) {
         res.status(400).json({message: error.message})
@@ -37,7 +38,7 @@ router.post('/add', async (req, res) => {
 router.get('/view/all', async (req, res) => {
     try{
         const data = await Model.find();
-        res.render('data', { data });
+        res.render('allData', { data });
         // res.json(data)
     }
     catch(error){
@@ -51,7 +52,8 @@ router.post('/view', async(req, res) => {
         console.log('id of person: ',req.body.id);
         const data = await Model.findById(req.body.id);
         console.log(data);
-        res.send(` ID: ${data._id},    Name: ${data.name},  Age: ${data.age} `);
+        res.render('viewSingle',{data});
+        // res.send(` ID: ${data._id},    Name: ${data.name},  Age: ${data.age} `);
         // res.json(data);
     }
     catch(error){
@@ -68,14 +70,14 @@ router.post('/view', async(req, res) => {
 router.post('/update', async (req, res) => {
     try {
         const id = req.body.id;
-        const updatedData = req.body;
+        const dataToUpdate = req.body;
         const options = { new: true };
 
-        const result = await Model.findByIdAndUpdate(
-            id, updatedData, options
+        const updatedData = await Model.findByIdAndUpdate(
+            id, dataToUpdate, options
         )
 
-        res.send(result);
+        res.status(201).render('updatedData',{updatedData});
     }
     catch (error) {
         res.status(400).json({ message: error.message })
@@ -102,8 +104,9 @@ router.get('/getOne/:id', async (req, res) => {
 router.post('/delete', async (req, res) => {
     try {
         const id = req.body.id;
-        const data = await Model.findByIdAndDelete(id)
-        res.send(`Document with name ${data.name} has been deleted..`)
+        const deletedData = await Model.findByIdAndDelete(id)
+        res.status(200).render('deletedData', {deletedData})
+        // res.send(`Document with name ${data.name} has been deleted..`)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
